@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>"Книжная полка"</title>
+		<!-- Bootstrap -->
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+		
+		<link href="styles/main.css" rel="stylesheet">
+	</head>
+	<body>
+		<!-- header -->
+		<div class="row my-header">
+			<!-- logo -->
+			<div class="col-sm-1 hidden-xs">
+				<img class="my-logo" src="images/logo.png" />
+			</div>
+			
+			<!-- search panel -->
+			<div class="col-sm-8">
+				<div class="row">
+					<div class="col-sm-12">
+						<ul class="my-list-menu">
+							<!-- <li class="my-list-menu-item" title="Все полки" data-toggle="popover" data-placement="bottom" data-conent="OLOLO">ПОЛКИ</li> -->
+							<li class="my-list-menu-item my-list-shelves" data-placement="bottom">ПОЛКИ</li>
+							<li class="my-list-menu-item">ПОЛЬЗОВАТЕЛИ</li>							
+						</ul>
+					</div>
+				</div>				
+				<div class="row">
+					<div class="col-sm-12">
+						<form role="form" class="form-inline my-form-search">							
+							<input type="text" class="form-control input-sm my-search-field" id="search_text" maxlength=32 placeholder="Введите название книги или автора">
+							<button type="submit" class="btn btn-success btn-sm">НАЙТИ</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<!-- register panel -->
+			<div class="col-sm-3 my-div-register">
+				<button class="btn btn-default my-btn-register" data-placement="bottom">Вход и регистрация</button>
+			</div>
+		</div>
+		
+		<!-- Breadcrumbs -->
+		<div class="row my-breadcrumbs">
+			<ul class="breadcrumb">
+				<li><a href="#">Все полки</a></li>
+				<li class="active">Фантастика</li> 
+			</ul>
+		</div>
+		
+		<!-- main -->
+		<div class="row">
+			<!--  main menu -->
+			<div class="col-sm-3">
+				<div class="my-menu-left">
+					<div><a href="#"> + Добавить книгу</a></div>
+					<div><a href="#"><span style="color:red;">(3)</span> Заявки на ваши книги</a></div>
+					<div><a href="#"><span style="color:red;">(5)</span> Ваши заявки на чужие книги</a></div>
+				</div>
+			</div>
+			
+			<!-- content -->
+			<div class="col-sm-9">
+				<div class=" row my-catalog">
+					<div class="col-sm-4">
+						<div class="my-category">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="my-category">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="my-category">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info" data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+						<div class="my-category my-category-top">
+							<div class="my-left-block">
+								<img class="my-img-book-logo" src="images/book_template.png" />
+							</div>
+							<div class="my-right-block">
+								<div class="my-category-book">Я - легенда</div>
+								<div class="my-category-author">Ричард Мэтсон</div>
+								<div class="my-category-user">Добавил: <a href="#">user1</a></div>
+								<div class="my-category-about"><button class="btn btn-info"  data-placement="bottom">О книге</button></div>
+								<div class="my-category-read"><button class="btn btn-success" data-placement="bottom">Читать</button></div>								
+							</div>
+							<div class=my-clear-both"></div>
+						</div>
+					</div>
+					
+					<!-- pagination -->
+					<div class="my-pagination">
+						<ul class="pagination">
+							<li><a href="#">1</a></li>
+							<li class="active"><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- shelves' list -->
+		<div id="list-shelves" class="hide">
+			<div style="float:left;">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="#">Классика</a></li>
+					<li><a href="#">Детективы</a></li>
+					<li><a href="#">Боевики</a></li>
+					<li><a href="#">Сказки</a></li>
+					<li><a href="#">Фэнтези</a></li>
+					<li><a href="#">Фантастика</a></li>
+					<li><a href="#">Любовные романы</a></li>
+				</ul>
+			</div>
+			<div style="float:left;">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="#">Бизнес</a></li>
+					<li><a href="#">Эзотерика</a></li>
+					<li><a href="#">Психология</a></li>
+					<li><a href="#">Иностранные языки</a></li>
+					<li><a href="#">Эротика</a></li>
+					<li><a href="#">Здоровье</a></li>
+					<li><a href="#">Кулинария</a></li>
+				</ul>
+			</div>
+			<div style="float:left;">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="#">Дом и семья</a></li>
+					<li><a href="#">История</a></li>
+					<li><a href="#">Медицина</a></li>
+					<li><a href="#">Наука и образование</a></li>
+					<li><a href="#">Приключения</a></li>
+					<li><a href="#">Публицистика</a></li>
+					<li><a href="#">Религия</a></li>
+					<li><a href="#">Поэзия</a></li>
+				</ul>
+			</div>
+				<div style="clear:both;"></div>
+		</div>
+		
+		<!-- register module -->
+		<div id="div_register" class="hide">
+			<form role="form" class="form-inline my-form-register">
+				<div class="my-input-login">Вход в систему</div>							
+				<div>
+					<input type="text" class="form-control input-sm my-input-login" id="search_text" maxlength=32 placeholder="Логин (электронная почта)">
+				</div>
+				<div>
+					<input type="text" class="form-control input-sm my-input-password" id="search_text" maxlength=32 placeholder="Пароль">
+				</div>
+				<div>
+					<button type="submit" class="btn btn-primary btn-sm my-btn-login">Войти</button>
+					<button type="submit" class="btn btn-success btn-sm my-btn-reg">Регистрация</button>
+					<div class="my-clear-both"></div>
+				</div>
+			</form>
+		</div>
+		
+		<!-- about book -->
+		<div id="div_about" class="hide">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+		</div>
+		
+		<!-- footer -->
+		<div class="row my-footer">
+			<div class="col-sm-12">footer</div>
+		</div>
+		
+		<script>			
+			$(document).ready(function(){
+				$('.my-btn-register').popover({
+					html: true,
+					content: function() {
+						return $('#div_register').html();
+					}
+				});
+				
+				$('.my-list-shelves').popover({
+					html: true,
+					content: function() {
+						return $('#list-shelves').html();
+					}
+				});
+				
+				$('.my-category-about .btn').popover({
+					html: true,
+					content: function() {
+						return $('#div_about').html();
+					}
+				});
+				
+				$('.my-category-read .btn').click(function() {
+					window.location = 'read.html';
+				});
+
+				/* закрываем по клику вне всплывающего окна...
+				$('body').on('click', function (e) {
+				    $('[data-placement="bottom"]').each(function () {
+				        /*if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+				        	//$(this).popover('hide');
+				        	 $(this).siblings('.popover').remove();
+				        }
+				    });
+				});
+				*/				
+			});
+		</script>
+	</body>
+</html>
