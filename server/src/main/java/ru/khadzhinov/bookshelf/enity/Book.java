@@ -2,9 +2,12 @@ package ru.khadzhinov.bookshelf.entity;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
+//import org.hibernate.annotations.Type;
 
+//import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+//import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,7 +31,7 @@ public class Book implements Serializable {
 	@Column(name = "ISBN", nullable = false)
 	private String isbn;
 	
-	/* ...................... ............ */
+	/* конструктор класса */
 	protected Book() {}
 	
 	public String getName() {
