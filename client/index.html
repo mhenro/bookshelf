@@ -8,6 +8,9 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 		<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		
+		<!-- main module -->
+		<script type="text/javascript" src="js/main.js"></script>
+		
 		<link href="styles/main.css" rel="stylesheet">
 	</head>
 	<body>
@@ -249,14 +252,21 @@
 			<form role="form" class="form-inline my-form-register">
 				<div class="my-input-login">Вход в систему</div>							
 				<div>
-					<input type="text" class="form-control input-sm my-input-login" id="search_text" maxlength=32 placeholder="Логин (электронная почта)">
+					<input type="text" class="form-control input-sm my-input-login" id="editLogin" maxlength=32 placeholder="Логин (электронная почта)">
 				</div>
 				<div>
-					<input type="text" class="form-control input-sm my-input-password" id="search_text" maxlength=32 placeholder="Пароль">
+					<input type="text" class="form-control input-sm my-input-password" id="editPassword" maxlength=32 placeholder="Пароль">
+				</div>
+				<div>
+					<img id="imgCaptcha" class="my-captcha" src="http://localhost:8080/get_captcha" />
+					<button id="btnReloadCaptcha" title="Сгенерировать новую картинку"><img src="images/reload.png" /></button>
+					<div>
+						<input type="text" class="form-control input-sm my-input-password" id="editCaptcha" maxlength=32 placeholder="Введите символы с изображения">
+					</div>
 				</div>
 				<div>
 					<button type="submit" class="btn btn-primary btn-sm my-btn-login">Войти</button>
-					<button type="submit" class="btn btn-success btn-sm my-btn-reg">Регистрация</button>
+					<button id="btnRegister" type="submit" class="btn btn-success btn-sm my-btn-reg">Регистрация</button>
 					<div class="my-clear-both"></div>
 				</div>
 			</form>
@@ -271,45 +281,5 @@
 		<div class="row my-footer">
 			<div class="col-sm-12">footer</div>
 		</div>
-		
-		<script>			
-			$(document).ready(function(){
-				$('.my-btn-register').popover({
-					html: true,
-					content: function() {
-						return $('#div_register').html();
-					}
-				});
-				
-				$('.my-list-shelves').popover({
-					html: true,
-					content: function() {
-						return $('#list-shelves').html();
-					}
-				});
-				
-				$('.my-category-about .btn').popover({
-					html: true,
-					content: function() {
-						return $('#div_about').html();
-					}
-				});
-				
-				$('.my-category-read .btn').click(function() {
-					window.location = 'read.html';
-				});
-
-				/* закрываем по клику вне всплывающего окна...
-				$('body').on('click', function (e) {
-				    $('[data-placement="bottom"]').each(function () {
-				        /*if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-				        	//$(this).popover('hide');
-				        	 $(this).siblings('.popover').remove();
-				        }
-				    });
-				});
-				*/				
-			});
-		</script>
 	</body>
 </html>
