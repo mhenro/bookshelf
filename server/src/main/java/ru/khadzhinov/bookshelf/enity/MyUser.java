@@ -10,23 +10,35 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "PASSWORD_HASH", nullable = false)
     private String passwordHash;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+    
+    @Column(name = "ENABLED", nullable = false)
+    private boolean enabled;
+    
+    /* constructors */
+    MyUser() {}
+    public MyUser(String email, String password, Role role) {
+    	this.email = email;
+    	this.passwordHash = password;
+    	this.role = role;
+    	this.enabled = false;
+    }
 
     /* getters, setters */
     public Long getId() {
@@ -55,6 +67,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public boolean getEnabled() {
+    	return enabled;
+    }
+    
+    public void setEnabled(boolean enabled) {
+    	this.enabled = enabled;
     }
 
     @Override

@@ -79,7 +79,7 @@ div {
 
 }
 
-/* Р¤РћР РњРђ Р Р•Р“РРЎРўР РђР¦РР */
+/* ФОРМА РЕГИСТРАЦИИ */
 .my-form-register {
 	padding: 5px;
 }
@@ -102,6 +102,9 @@ div {
 	margin-right: 0px;
 	float: right;		
 }
+.my-captcha {
+	margin: 5px;
+}
 
 .popover {
 	max-width: 100%;
@@ -111,7 +114,7 @@ div {
 	clear: both;
 }
 
-/* РљРђРўР•Р“РћР РРЇ РљРђРўРђР›РћР“Рђ РљРќРР“ */
+/* КАТЕГОРИЯ КАТАЛОГА КНИГ */
 .my-catalog {
 	
 }
@@ -162,7 +165,7 @@ div {
 	text-align: center;
 }
 
-/* СЃС‚СЂР°РЅРёС†С‹ С‡РёС‚Р°Р»РєРё */
+/* страницы читалки */
 .my-page-left,
 .my-page-right {
 	/*border: 1px solid red;*/
@@ -171,7 +174,7 @@ div {
 	padding-left: 30px;
 	padding-right: 0px;
 }
-.my-noselect {	/*Р·Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ С‚РµРєСЃС‚Р°*/
+.my-noselect {	/*запрет копирования текста*/
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;

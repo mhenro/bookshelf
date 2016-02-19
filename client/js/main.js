@@ -6,12 +6,14 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('body').on('click', '#btnReloadCaptcha', function () {
+	$('body').on('click', '#btnReloadCaptcha', function (e) {
 		$('#imgCaptcha').attr('src', 'http://localhost:8080/get_captcha?' + new Date());
+		e.preventDefault();
 	});
 	
 	/* register button handler */
-	$('body').on('click', '#btnRegister', function () {
+	$('body').on('click', '#btnRegister', function (e) {
+		e.preventDefault();
 		var request = $.ajax({
 			url: 'http://localhost:8080/register',
 			method: 'GET',
@@ -25,14 +27,65 @@ $(document).ready(function(){
 		});	// --- ajax
 		
 		request.done(function(_msg) {
-			alert(_msg);
-			alert('На указанную Вами почту отправлено письмо с инструкцией по дальнейшей активации вашего аккаунта!');
+			var code = _msg.code,
+				msg = _msg.msg;
+			
+			/* if no errors */
+			if (code === 0) {
+				$('#lblRegisterError').text('');
+				$('#lblRegisterError').attr('display', 'none');
+				
+				alert('На указанную Вами почту отправлено письмо с инструкцией по дальнейшей активации вашего аккаунта!');
+			}
+			/* if an errors*/
+			else {
+				$('#lblRegisterError').text(msg);
+				$('#lblRegisterError').attr('display', 'block');
+			}			
 		});
 		request.fail(function(_jqXHR, _textStatus) {
 			alert('Request failed: ' + _textStatus);
 		});
 	});
 	
+	/* login button handler */
+	$('body').on('click', '#btnLogin', function (e) {
+		e.preventDefault();
+		var request = $.ajax({
+			url: 'http://localhost:8080/login',
+			method: 'GET',
+			crossDomain: true,
+		    dataType: 'jsonp',
+			data: {
+				login: $('#editLogin').val(),
+				password: $('#editPassword').val(),
+				captcha: $('#editCaptcha').val()
+			}	// --- data
+		});	// --- ajax
+		
+		request.done(function(_msg) {
+			var code = _msg.code,
+				msg = _msg.msg;
+			
+			/* if no errors */
+			if (code === 0) {
+				$('#lblRegisterError').text('');
+				$('#lblRegisterError').attr('display', 'none');
+				
+				alert('Регистрация пройдена!');
+			}
+			/* if an errors*/
+			else {
+				$('#lblRegisterError').text(msg);
+				$('#lblRegisterError').attr('display', 'block');
+			}			
+		});
+		request.fail(function(_jqXHR, _textStatus) {
+			alert('Request failed: ' + _textStatus);
+		});
+	});
+	
+	/*------------------------------------------------------------------*/
 	$('.my-list-shelves').popover({
 		html: true,
 		content: function() {

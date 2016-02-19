@@ -16,30 +16,26 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
-//import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-//import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
 
 
 import ru.khadzhinov.bookshelf.entity.MyUser;
-import ru.khadzhinov.bookshelf.entity.Role;
 import ru.khadzhinov.bookshelf.service.IUserService;
 
 @RestController
-public class RegisterController {
+public class LoginController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class); 
 	private final IUserService userService;
 	
 	@Autowired
-    public RegisterController(IUserService userService) {
+    public LoginController(IUserService userService) {
         this.userService = userService;
     }
 	
-	//@PreAuthorize("isAnonymous()")
-	@RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/login"}, method = RequestMethod.GET)
 	public RegisterErrors search(
 	@RequestParam Map<String,String> allRequestParams, ModelMap model, HttpServletRequest request) {
 		boolean isBot = true;
@@ -66,13 +62,14 @@ public class RegisterController {
 		/* captcha is correct? */
 		if (!isBot) {
 			MyUser myUser = userService.getUserByEmail(login);
-			if (myUser != null) {
-				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "User already exist!");
+			if (myUser == null) {
+				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "User not found!");
 				return registerErrors;
 			}
-			
-			myUser = new MyUser(login, password, Role.USER);
-			userService.save(myUser);
+			if (!password.equals(myUser.getPasswordHash())) {
+				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "Password is incorrect!");
+				return registerErrors;
+			}
 			
 			Collection<SimpleGrantedAuthority> authArr = new ArrayList<SimpleGrantedAuthority>();
 			SimpleGrantedAuthority auth = new SimpleGrantedAuthority(myUser.getRole().toString());
@@ -86,7 +83,7 @@ public class RegisterController {
 			logger.debug("Logging in with {}", authentication.getPrincipal());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
-			RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.SUCCESS, "User created!");
+			RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.SUCCESS, "Log in successful!");
 			
 			return registerErrors;
 		}

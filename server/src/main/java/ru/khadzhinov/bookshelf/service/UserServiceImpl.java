@@ -1,20 +1,27 @@
 package ru.khadzhinov.bookshelf.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
-import ru.khadzhinov.bookshelf.entity.User;
+import ru.khadzhinov.bookshelf.entity.MyUser;
 
 @Repository
 @Transactional
 @Service("userService")
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService, UserDetailsService {
 
     private final IUserRepository userRepository;
 
@@ -24,26 +31,43 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getUserById(long id) {
+    public MyUser getUserById(long id) {
         return userRepository.findOne(id);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public MyUser getUserByEmail(String email) {
         return userRepository.findOneByEmail(email);
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<MyUser> getAllUsers() {
         return Lists.newArrayList(userRepository.findAll());
     }
 
     @Override
-    public User save(User user/*UserCreateForm form*/) {
+    public MyUser save(MyUser user/*UserCreateForm form*/) {
         /*User user = new User();
         user.setEmail(form.getEmail());
         user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
         user.setRole(form.getRole());*/
         return userRepository.save(user);
     }
+
+	@Override
+	public UserDetails loadUserByUsername(String email)
+			throws UsernameNotFoundException {
+		
+		MyUser myUser = getUserByEmail(email);
+		
+		Collection<SimpleGrantedAuthority> authArr = new ArrayList<SimpleGrantedAuthority>();
+		SimpleGrantedAuthority auth = new SimpleGrantedAuthority(myUser.getRole().toString());
+		authArr.add(auth);
+		
+		//username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities
+		UserDetails user = new User(myUser.getEmail(), myUser.getPasswordHash(), myUser.getEnabled(), 
+				true, true, true, authArr);
+		
+		return user;
+	}
 }

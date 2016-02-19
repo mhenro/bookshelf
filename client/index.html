@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -250,7 +250,8 @@
 		<!-- register module -->
 		<div id="div_register" class="hide">
 			<form role="form" class="form-inline my-form-register">
-				<div class="my-input-login">Вход в систему</div>							
+				<div class="my-input-login">Вход в систему</div>	
+				<div id="lblRegisterError" class="my-error-string"></div>						
 				<div>
 					<input type="text" class="form-control input-sm my-input-login" id="editLogin" maxlength=32 placeholder="Логин (электронная почта)">
 				</div>
@@ -265,7 +266,7 @@
 					</div>
 				</div>
 				<div>
-					<button type="submit" class="btn btn-primary btn-sm my-btn-login">Войти</button>
+					<button id="btnLogin" type="submit" class="btn btn-primary btn-sm my-btn-login">Войти</button>
 					<button id="btnRegister" type="submit" class="btn btn-success btn-sm my-btn-reg">Регистрация</button>
 					<div class="my-clear-both"></div>
 				</div>
