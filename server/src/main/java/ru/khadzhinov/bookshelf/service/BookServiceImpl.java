@@ -14,7 +14,7 @@ import ru.khadzhinov.bookshelf.entity.Book;
 @Repository
 @Transactional
 @Service("bookService")
-class BookServiceImpl implements IBookService {
+public class BookServiceImpl implements IBookService {
 	private IBookRepository bookRepository;
 	
 	@Autowired
@@ -24,7 +24,7 @@ class BookServiceImpl implements IBookService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Book> findAll() {
+	public List<Book> getAllBooks() {
 		return Lists.newArrayList(bookRepository.findAll());
 	}
 

@@ -15,7 +15,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/").permitAll()
 			.antMatchers("/sendmail").fullyAuthenticated()
+			.antMatchers("/getshelves").permitAll()
 			.antMatchers("/register").permitAll()
-			.antMatchers("/login").permitAll();;
+			.antMatchers("/login").permitAll()
+			.antMatchers("/email_confirm").permitAll();
 	}
 }

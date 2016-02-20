@@ -7,7 +7,7 @@ $(document).ready(function(){
 	});
 	
 	$('body').on('click', '#btnReloadCaptcha', function (e) {
-		$('#imgCaptcha').attr('src', 'http://localhost:8080/get_captcha?' + new Date());
+		$('#imgCaptcha').attr('src', 'http://82.209.91.137:8082/get_captcha?' + new Date());
 		e.preventDefault();
 	});
 	
@@ -15,7 +15,7 @@ $(document).ready(function(){
 	$('body').on('click', '#btnRegister', function (e) {
 		e.preventDefault();
 		var request = $.ajax({
-			url: 'http://localhost:8080/register',
+			url: 'http://82.209.91.137:8082/register',
 			method: 'GET',
 			crossDomain: true,
 		    dataType: 'jsonp',
@@ -52,7 +52,7 @@ $(document).ready(function(){
 	$('body').on('click', '#btnLogin', function (e) {
 		e.preventDefault();
 		var request = $.ajax({
-			url: 'http://localhost:8080/login',
+			url: 'http://82.209.91.137:8082/login',
 			method: 'GET',
 			crossDomain: true,
 		    dataType: 'jsonp',
@@ -83,6 +83,34 @@ $(document).ready(function(){
 		request.fail(function(_jqXHR, _textStatus) {
 			alert('Request failed: ' + _textStatus);
 		});
+	});
+	
+	/* load shelves list */
+	var request = $.ajax({
+		url: 'http://82.209.91.137:8082/getshelves',
+		method: 'GET',
+		crossDomain: true,
+	    dataType: 'jsonp',
+		data: {}	// --- data
+	});	// --- ajax
+	
+	request.done(function(_data) {
+		$('#list-shelves').remove();
+		$('body').append('<div id="list-shelves" class="hide"></div>');
+		
+		var iLast = 0;
+		for (var i = 0; i < _data.length; i++) {
+			if (i%10 === 0) {
+				iLast = i;
+				$('#list-shelves').append('<div id="div' + iLast + '" style="float:left;"><div>');
+				$('#div' + iLast).append('<ul class="nav nav-pills nav-stacked"></ul>');
+			}
+			$('#div' + iLast + ' ul').append('<li title="' + _data[i].description + '"><a href="#">' + _data[i].name + '</a></li>');
+		}	// --- for			
+		$('#list-shelves').append('<div style="clear:both;"></div>');
+	});
+	request.fail(function(_jqXHR, _textStatus) {
+		alert('Request failed: ' + _textStatus);
 	});
 	
 	/*------------------------------------------------------------------*/

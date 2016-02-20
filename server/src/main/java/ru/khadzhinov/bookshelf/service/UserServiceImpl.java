@@ -39,6 +39,11 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     public MyUser getUserByEmail(String email) {
         return userRepository.findOneByEmail(email);
     }
+    
+    @Override
+    public MyUser getUserByToken(String token) {
+    	return userRepository.findOneByToken(token);
+    }
 
     @Override
     public List<MyUser> getAllUsers() {
@@ -46,11 +51,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public MyUser save(MyUser user/*UserCreateForm form*/) {
-        /*User user = new User();
-        user.setEmail(form.getEmail());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
-        user.setRole(form.getRole());*/
+    public MyUser save(MyUser user) {
         return userRepository.save(user);
     }
 

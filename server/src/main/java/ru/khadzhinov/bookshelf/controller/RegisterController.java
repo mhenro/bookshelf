@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,15 +33,38 @@ import ru.khadzhinov.bookshelf.service.IUserService;
 
 @RestController
 public class RegisterController {
-	private final Logger logger = LoggerFactory.getLogger(MainController.class); 
+	private final Logger logger = LoggerFactory.getLogger(MainController.class);
+	private final JavaMailSender javaMailSender;
 	private final IUserService userService;
 	
 	@Autowired
-    public RegisterController(IUserService userService) {
+    public RegisterController(IUserService userService, JavaMailSender javaMailSender) {
         this.userService = userService;
+        this.javaMailSender = javaMailSender;
     }
 	
-	//@PreAuthorize("isAnonymous()")
+	/* check verification token function */
+	@RequestMapping(value = {"/email_confirm"}, method = RequestMethod.GET)
+	public String checkToken(
+	@RequestParam Map<String, String> allRequestParams, HttpServletRequest request) {
+		/* loop a Map */
+		String token = "";
+		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+			if (entry.getKey().equals("token")) {
+				token = entry.getValue();
+				break;
+			}
+		}
+		MyUser myUser = userService.getUserByToken(token);
+		myUser.setEnabled(true);
+		
+		/* save user in database */
+		userService.save(myUser);
+		
+		return "<html><body>Активация аккаунта успешно произведена!<br>Теперь можете зайти на сайт <a href=\"http://82.209.91.137:8080/bookshelf/\">http://bookshelf/</a> и пользоваться полным доступом!</body></html>";
+	}
+	
+	/* register function*/
 	@RequestMapping(value = {"/register"}, method = RequestMethod.GET)
 	public RegisterErrors search(
 	@RequestParam Map<String,String> allRequestParams, ModelMap model, HttpServletRequest request) {
@@ -65,15 +91,33 @@ public class RegisterController {
 		
 		/* captcha is correct? */
 		if (!isBot) {
+			/* user exist? */
 			MyUser myUser = userService.getUserByEmail(login);
 			if (myUser != null) {
 				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "User already exist!");
 				return registerErrors;
 			}
 			
+			/* create user */
 			myUser = new MyUser(login, password, Role.USER);
+			
+			/* send verification email */
+			String subject = "Активация аккаунта";
+			String text = "Для активации вашего аккаунта, пожалуйста, перейдите по этой ссылке: " +
+					"http://82.209.91.137:8082/email_confirm?token=" + myUser.getToken() +
+					"\nЕсли вы не регистрировались на сайте mhenro.tk/bookshelf просто проигнорируйте это сообщение!";
+			try {
+				sendEmail(myUser.getEmail(), subject, text);
+			} catch (MailSendException e) {
+				/* return json */
+				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "Mail is incorrect!");				
+				return registerErrors;
+			}
+			
+			/* save user in database */
 			userService.save(myUser);
 			
+			/* authentication */
 			Collection<SimpleGrantedAuthority> authArr = new ArrayList<SimpleGrantedAuthority>();
 			SimpleGrantedAuthority auth = new SimpleGrantedAuthority(myUser.getRole().toString());
 			authArr.add(auth);
@@ -86,8 +130,8 @@ public class RegisterController {
 			logger.debug("Logging in with {}", authentication.getPrincipal());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
-			RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.SUCCESS, "User created!");
-			
+			/* return json */
+			RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.SUCCESS, "User created!");			
 			return registerErrors;
 		}
 		/* captcha is wrong? */
@@ -96,6 +140,26 @@ public class RegisterController {
 			return registerErrors;
 		}
 	}
+	
+	/* procedure to send email */
+	void sendEmail(String destAddr, String subject, String text) {
+		SimpleMailMessage mailMsg = new SimpleMailMessage();
+		mailMsg.setTo(destAddr);
+		mailMsg.setFrom("mh.bookshelf@gmail.com");
+		mailMsg.setSubject(subject);
+		mailMsg.setText(text);
+		javaMailSender.send(mailMsg);
+	}
+	
+	 SimpleMailMessage send() {        
+	        SimpleMailMessage mailMessage = new SimpleMailMessage();
+	        mailMessage.setTo("mhenro@gmail.com");
+	        mailMessage.setFrom("mhbookshelf@gmail.com");
+	        mailMessage.setSubject("Активация аккаунта");
+	        mailMessage.setText("Lorem ipsum dolor sit amet");
+	        javaMailSender.send(mailMessage);
+	        return mailMessage;
+	    }
 	
 	/* error codes */
 	private static class RegisterErrorCodes {

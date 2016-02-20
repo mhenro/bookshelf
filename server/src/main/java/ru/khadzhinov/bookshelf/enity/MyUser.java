@@ -1,5 +1,7 @@
 package ru.khadzhinov.bookshelf.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +19,7 @@ public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, updatable = false)
+    @Column(name = "USER_ID", nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
@@ -31,6 +35,14 @@ public class MyUser {
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled;
     
+    /* verification token */
+    @Column(name = "TOKEN", nullable = true)
+    private String token;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "EXPIRE_DATE", nullable = true)
+    private Date expireDate;
+    
     /* constructors */
     MyUser() {}
     public MyUser(String email, String password, Role role) {
@@ -38,6 +50,8 @@ public class MyUser {
     	this.passwordHash = password;
     	this.role = role;
     	this.enabled = false;
+    	this.token = java.util.UUID.randomUUID().toString();
+    	this.expireDate = new Date();
     }
 
     /* getters, setters */
@@ -76,14 +90,33 @@ public class MyUser {
     public void setEnabled(boolean enabled) {
     	this.enabled = enabled;
     }
+    
+    public String getToken() {
+    	return token;
+    }
+    
+    public void setToken(String token) {
+    	this.token = token;
+    }
+    
+    public Date getExpireDate() {
+    	return expireDate;
+    }
+    
+    public void setExpireDate(Date expireDate) {
+    	this.expireDate = expireDate;
+    }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", email='" + email.replaceFirst("@.*", "@***") +
-                ", passwordHash='" + passwordHash.substring(0, 10) +
+                ", email='" + email + //.replaceFirst("@.*", "@***") +
+                ", passwordHash='" + passwordHash + 	//.substring(0, 10) +
                 ", role=" + role +
+                ", enabled=" + enabled +
+                ", token=" + token +
+                ", date=" + expireDate +
                 '}';
     }
 }

@@ -15,10 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,9 +24,8 @@ public class CaptchaController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class);	
 	
 	/* generate captcha to jpeg and remember it in user session */
-	@PreAuthorize("isAnonymous()")
 	@RequestMapping(value = "/get_captcha", method = RequestMethod.GET, produces = "image/jpg")
-	public @ResponseBody byte[] getFile(HttpServletRequest request)  {
+	public byte[] getFile(HttpServletRequest request)  {
 	    try {
 	    	int width = 120;
 	        int height = 30;

@@ -81,8 +81,7 @@ public class LoginController {
 				
 			Authentication authentication =  new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			logger.debug("Logging in with {}", authentication.getPrincipal());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			
+			SecurityContextHolder.getContext().setAuthentication(authentication);			
 			RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.SUCCESS, "Log in successful!");
 			
 			return registerErrors;
@@ -127,16 +126,4 @@ public class LoginController {
 			this.msg = msg;
 		}
 	}
-	
-	/*
-	 @RequestMapping(method = RequestMethod.GET)
-    public String list(Model model) {
-    	logger.info("Listing books");
-    	List<Book> books = bookService.findAll();
-    	model.addAttribute("books", books);
-    	logger.info("Books count=" + books.size());
-    	
-    	return "books/list";
-    }
-	 * */
 }
