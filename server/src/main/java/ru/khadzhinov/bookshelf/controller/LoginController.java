@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.khadzhinov.bookshelf.entity.MyUser;
 import ru.khadzhinov.bookshelf.service.IUserService;
 
+@CrossOrigin
 @RestController
 public class LoginController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class); 
@@ -35,7 +37,7 @@ public class LoginController {
         this.userService = userService;
     }
 	
-	@RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/login"}, method = RequestMethod.POST)
 	public RegisterErrors search(
 	@RequestParam Map<String,String> allRequestParams, ModelMap model, HttpServletRequest request) {
 		boolean isBot = true;

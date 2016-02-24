@@ -5,7 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.khadzhinov.bookshelf.entity.Book;
@@ -13,6 +15,7 @@ import ru.khadzhinov.bookshelf.entity.Shelf;
 import ru.khadzhinov.bookshelf.service.IBookService;
 import ru.khadzhinov.bookshelf.service.IShelfService;
 
+@CrossOrigin
 @RestController
 public class MainController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -26,7 +29,7 @@ public class MainController {
 	}
 	 
 	/* get list of shelves */
-	@RequestMapping(value = "/getshelves", headers="Accept=application/json")
+	@RequestMapping(value = {"/getshelves"}, method = RequestMethod.POST)
 	public List<Shelf> getShelves() {
         /*List<Shelf> l1 = new ArrayList<Shelf>();
         l1.add(new );
@@ -39,7 +42,7 @@ public class MainController {
 	}
 	
 	/* get list of books */
-	@RequestMapping(value = "/getbooks", headers="Accept=application/json")
+	@RequestMapping(value = {"/getbooks"}, method = RequestMethod.POST)
 	public List<Book> getBooks() {		
 		List<Book> bookArr = bookService.getAllBooks();
 		return bookArr;

@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ import ru.khadzhinov.bookshelf.entity.MyUser;
 import ru.khadzhinov.bookshelf.entity.Role;
 import ru.khadzhinov.bookshelf.service.IUserService;
 
+@CrossOrigin
 @RestController
 public class RegisterController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -44,7 +46,7 @@ public class RegisterController {
     }
 	
 	/* check verification token function */
-	@RequestMapping(value = {"/email_confirm"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/email_confirm"}, method = RequestMethod.POST)
 	public String checkToken(
 	@RequestParam Map<String, String> allRequestParams, HttpServletRequest request) {
 		/* loop a Map */
@@ -65,8 +67,8 @@ public class RegisterController {
 	}
 	
 	/* register function*/
-	@RequestMapping(value = {"/register"}, method = RequestMethod.GET)
-	public RegisterErrors search(
+	@RequestMapping(value = {"/register"}, method = RequestMethod.POST)
+	public RegisterErrors register(
 	@RequestParam Map<String,String> allRequestParams, ModelMap model, HttpServletRequest request) {
 		boolean isBot = true;
 		

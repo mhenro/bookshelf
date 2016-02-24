@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.khadzhinov.bookshelf.service.*;
 import ru.khadzhinov.bookshelf.entity.Book;
 
+@CrossOrigin
 @RequestMapping("/books")
 @Controller
 public class BookController {

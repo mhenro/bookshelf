@@ -7,12 +7,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.khadzhinov.bookshelf.entity.MyUser;
 import ru.khadzhinov.bookshelf.service.IUserService;
 
+@CrossOrigin
 @RestController
 public class SendMailController {	
 	 private final JavaMailSender javaMailSender;

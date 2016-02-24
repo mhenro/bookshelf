@@ -1,4 +1,4 @@
-package ru.khadzhinov.bookshelf.controller;
+/*package ru.khadzhinov.bookshelf.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
@@ -9,3 +9,4 @@ public class JsonpAdvice extends AbstractJsonpResponseBodyAdvice {
         super("callback");
     }
 }
+*/

@@ -16,9 +16,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var request = $.ajax({
 			url: 'http://82.209.91.137:8082/register',
-			method: 'GET',
+			method: 'POST',
 			crossDomain: true,
-		    dataType: 'jsonp',
+		    //dataType: 'jsonp',
 			data: {
 				login: $('#editLogin').val(),
 				password: $('#editPassword').val(),
@@ -53,9 +53,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var request = $.ajax({
 			url: 'http://82.209.91.137:8082/login',
-			method: 'GET',
+			method: 'POST',
 			crossDomain: true,
-		    dataType: 'jsonp',
+		    //dataType: 'jsonp',
 			data: {
 				login: $('#editLogin').val(),
 				password: $('#editPassword').val(),
@@ -88,9 +88,9 @@ $(document).ready(function(){
 	/* load shelves list */
 	var request = $.ajax({
 		url: 'http://82.209.91.137:8082/getshelves',
-		method: 'GET',
+		method: 'POST',
 		crossDomain: true,
-	    dataType: 'jsonp',
+	    //dataType: 'jsonp',
 		data: {}	// --- data
 	});	// --- ajax
 	
