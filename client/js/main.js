@@ -19,6 +19,9 @@ $(document).ready(function(){
 			method: 'POST',
 			crossDomain: true,
 		    //dataType: 'jsonp',
+			xhrFields: {
+				withCredentials: true
+		    },
 			data: {
 				login: $('#editLogin').val(),
 				password: $('#editPassword').val(),
@@ -56,6 +59,9 @@ $(document).ready(function(){
 			method: 'POST',
 			crossDomain: true,
 		    //dataType: 'jsonp',
+			xhrFields: {
+				withCredentials: true
+		    },
 			data: {
 				login: $('#editLogin').val(),
 				password: $('#editPassword').val(),
@@ -91,6 +97,9 @@ $(document).ready(function(){
 		method: 'POST',
 		crossDomain: true,
 	    //dataType: 'jsonp',
+		xhrFields: {
+			withCredentials: true
+	    },
 		data: {}	// --- data
 	});	// --- ajax
 	

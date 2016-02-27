@@ -51,7 +51,7 @@ public class MyUser {
     	this.role = role;
     	this.enabled = false;
     	this.token = java.util.UUID.randomUUID().toString();
-    	this.expireDate = new Date();
+    	this.expireDate = new Date(new Date().getTime() + (24*60*60*1000));	//token will be active until 24 hours
     }
 
     /* getters, setters */

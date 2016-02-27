@@ -10,4 +10,5 @@ public interface IUserService {
     MyUser getUserByToken(String token);
     List<MyUser> getAllUsers();
     MyUser save(MyUser user);
+    List<MyUser> remove(String email);
 }

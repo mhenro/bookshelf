@@ -54,6 +54,11 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     public MyUser save(MyUser user) {
         return userRepository.save(user);
     }
+    
+    @Override
+	public List<MyUser> remove(String email) {		
+		return userRepository.deleteByEmail(email);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email)

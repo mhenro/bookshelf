@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class CaptchaController {	
-	private final Logger logger = LoggerFactory.getLogger(MainController.class);	
+	private final Logger logger = LoggerFactory.getLogger(CaptchaController.class);	
 	
 	/* generate captcha to jpeg and remember it in user session */
 	@RequestMapping(value = "/get_captcha", method = RequestMethod.GET, produces = "image/jpg")

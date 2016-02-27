@@ -2,16 +2,20 @@ package ru.khadzhinov.bookshelf.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailParseException;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,12 +24,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-//import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
 
 
 import ru.khadzhinov.bookshelf.entity.MyUser;
@@ -36,8 +38,8 @@ import ru.khadzhinov.bookshelf.service.IUserService;
 @RestController
 public class RegisterController {
 	private final Logger logger = LoggerFactory.getLogger(MainController.class);
-	private final JavaMailSender javaMailSender;
 	private final IUserService userService;
+	private final JavaMailSender javaMailSender;
 	
 	@Autowired
     public RegisterController(IUserService userService, JavaMailSender javaMailSender) {
@@ -46,7 +48,7 @@ public class RegisterController {
     }
 	
 	/* check verification token function */
-	@RequestMapping(value = {"/email_confirm"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/email_confirm"}, method = RequestMethod.GET)
 	public String checkToken(
 	@RequestParam Map<String, String> allRequestParams, HttpServletRequest request) {
 		/* loop a Map */
@@ -58,12 +60,28 @@ public class RegisterController {
 			}
 		}
 		MyUser myUser = userService.getUserByToken(token);
-		myUser.setEnabled(true);
 		
-		/* save user in database */
-		userService.save(myUser);
-		
-		return "<html><body>Активация аккаунта успешно произведена!<br>Теперь можете зайти на сайт <a href=\"http://82.209.91.137:8080/bookshelf/\">http://bookshelf/</a> и пользоваться полным доступом!</body></html>";
+		/* if user exist, then */
+		if (myUser != null) {
+			Date expireDate = myUser.getExpireDate();
+			
+			/* if token isn't expired, then */
+			if (expireDate.after(new Date())) {
+				myUser.setEnabled(true);
+				
+				/* save user in database */
+				userService.save(myUser);
+				
+				return "<html><head><meta charset=\"utf-8\"></head><body>Активация аккаунта успешно произведена!<br>Теперь можете зайти на сайт <a href=\"http://82.209.91.137:8080/bookshelf/\">http://bookshelf/</a> и пользоваться полным доступом!</body></html>";
+			}
+			else {
+				userService.remove(myUser.getEmail());
+				return "<html><head><meta charset=\"utf-8\"></head><body>Срок действия активации истек! Пожалуйста, повторите регистрацию</body></html>";
+			}
+		}
+		else {
+			return "<html><head><meta charset=\"utf-8\"></head><body>Ошибка активации аккаунта! Повторите регистрацию еще раз, пожалуйста!</body></html>";
+		}
 	}
 	
 	/* register function*/
@@ -76,10 +94,16 @@ public class RegisterController {
 		String login = "";
 		String password = "";
 		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+			if (entry == null) continue;
+			if (entry.getKey() == null) continue;
+			
 			if (entry.getKey().equals("captcha")) {
-				logger.info("user captcha = " + entry.getValue());
-				logger.info("correct captcha = " + request.getSession().getAttribute("captcha"));
-				if (entry.getValue().equals(request.getSession().getAttribute("captcha"))) {
+				String userCaptcha = entry.getValue();
+				if (request.getSession().getAttribute("captcha") == null) logger.error("session captcha = null!");
+				String sessionCaptcha = request.getSession().getAttribute("captcha").toString();
+				logger.info("user captcha = " + userCaptcha);
+				logger.info("correct captcha = " + sessionCaptcha);
+				if ((userCaptcha != null) && userCaptcha.equals(sessionCaptcha)) {
 					isBot = false;
 				}
 			}
@@ -105,16 +129,17 @@ public class RegisterController {
 			
 			/* send verification email */
 			String subject = "Активация аккаунта";
-			String text = "Для активации вашего аккаунта, пожалуйста, перейдите по этой ссылке: " +
-					"http://82.209.91.137:8082/email_confirm?token=" + myUser.getToken() +
-					"\nЕсли вы не регистрировались на сайте mhenro.tk/bookshelf просто проигнорируйте это сообщение!";
+			String text = "<html><head><meta charset=\"utf-8\"></head><body>Для активации вашего аккаунта, пожалуйста, перейдите по этой " +
+					"<a href=\"http://82.209.91.137:8082/email_confirm?token=" + myUser.getToken() + 
+					"\">ссылке</a>" +
+					"\nЕсли вы не регистрировались на сайте mhenro.tk/bookshelf просто проигнорируйте это сообщение!</body></head>";
 			try {
 				sendEmail(myUser.getEmail(), subject, text);
-			} catch (MailSendException e) {
+			} catch (MessagingException|MailSendException|MailParseException e) {
 				/* return json */
 				RegisterErrors registerErrors = new RegisterErrors(RegisterErrorCodes.ERROR, "Mail is incorrect!");				
 				return registerErrors;
-			}
+			} 
 			
 			/* save user in database */
 			userService.save(myUser);
@@ -129,7 +154,6 @@ public class RegisterController {
 					true, true, true, authArr);
 				
 			Authentication authentication =  new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-			logger.debug("Logging in with {}", authentication.getPrincipal());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
 			/* return json */
@@ -144,24 +168,26 @@ public class RegisterController {
 	}
 	
 	/* procedure to send email */
-	void sendEmail(String destAddr, String subject, String text) {
-		SimpleMailMessage mailMsg = new SimpleMailMessage();
-		mailMsg.setTo(destAddr);
-		mailMsg.setFrom("mh.bookshelf@gmail.com");
-		mailMsg.setSubject(subject);
-		mailMsg.setText(text);
-		javaMailSender.send(mailMsg);
+	void sendEmail(String destAddr, String subject, String text) throws MessagingException {
+		//JavaMailSenderImpl sender = new JavaMailSenderImpl();
+		MimeMessage message = javaMailSender.createMimeMessage();
+
+		/* use the true flag to indicate you need a multipart message */
+		MimeMessageHelper helper = new MimeMessageHelper(message, false);
+		helper.setTo(destAddr);
+		helper.setSubject(subject);
+		
+		message.setContent(text, "text/html; charset=UTF-8");
+
+		/* use the true flag to indicate the text included is HTML */
+		//helper.setText(text, true);
+
+		/* let's include the infamous windows Sample file (this time copied to c:/) */
+		//FileSystemResource res = new FileSystemResource(new File("c:/Sample.jpg"));
+		//helper.addInline("identifier1234", res);
+
+		javaMailSender.send(message);
 	}
-	
-	 SimpleMailMessage send() {        
-	        SimpleMailMessage mailMessage = new SimpleMailMessage();
-	        mailMessage.setTo("mhenro@gmail.com");
-	        mailMessage.setFrom("mhbookshelf@gmail.com");
-	        mailMessage.setSubject("Активация аккаунта");
-	        mailMessage.setText("Lorem ipsum dolor sit amet");
-	        javaMailSender.send(mailMessage);
-	        return mailMessage;
-	    }
 	
 	/* error codes */
 	private static class RegisterErrorCodes {
