@@ -30,7 +30,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Override
+	@Override
     public MyUser getUserById(long id) {
         return userRepository.findOne(id);
     }

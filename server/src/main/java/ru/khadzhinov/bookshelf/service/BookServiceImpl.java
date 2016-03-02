@@ -27,6 +27,18 @@ public class BookServiceImpl implements IBookService {
 	public List<Book> getAllBooks() {
 		return Lists.newArrayList(bookRepository.findAll());
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Book> getByName(String name) {
+		return Lists.newArrayList(bookRepository.findByName(name));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Book> getByAuthor(String author) {
+		return Lists.newArrayList(bookRepository.findByAuthor(author));
+	}
 
 	@Override
 	@Transactional(readOnly = true)
